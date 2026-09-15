@@ -3,211 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wolf-Bytes | Cyber Arcade</title>
+    <title>Wolf-Bytes | Arcade Cabinet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-color: #050505;
-            --term-green: #00ff41;
-            --term-green-glow: #00ff41aa;
-            --cyber-pink: #ff00ff;
-            --cyber-blue: #00ffff;
-            --dark-gray: #1a1a1a;
-        }
-
-        @font-face {
-            font-family: 'Terminal';
-            src: url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-        }
-
         body {
-            background-color: var(--bg-color);
-            color: var(--term-green);
-            font-family: 'Share Tech Mono', monospace, 'Courier New';
+            background-color: #0b0c10;
             margin: 0;
-            padding: 0;
+            padding: 20px;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow-x: hidden;
-            background-image: 
-                linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
         }
 
-        /* Scanline effect overlay */
-        body::after {
-            content: " ";
-            display: block;
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2;
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
-        }
-
-        header {
-            margin-top: 3rem;
-            text-align: center;
+        .arcade-cabinet {
+            width: 450px;
+            background: #111;
+            border: 12px solid #2a2a35;
+            border-radius: 5px 5px 0 0;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 15px rgba(0,0,0,0.9);
+            display: flex;
+            flex-direction: column;
             position: relative;
-            z-index: 3;
         }
 
-        h1 {
-            font-size: 3.5rem;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            color: var(--term-green);
-            text-shadow: 0 0 10px var(--term-green-glow);
-            animation: glitch 2s infinite;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: var(--cyber-blue);
-            margin-top: 0.5rem;
-            text-shadow: 0 0 5px var(--cyber-blue);
-        }
-
-        .arcade-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            width: 80%;
-            max-width: 1000px;
-            margin: 4rem auto;
-            position: relative;
-            z-index: 3;
-        }
-
-        .game-card {
-            background: var(--dark-gray);
-            border: 1px solid var(--term-green);
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            position: relative;
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
-        }
-
-        .game-card::before {
+        /* Side bevels */
+        .arcade-cabinet::before, .arcade-cabinet::after {
             content: '';
             position: absolute;
-            top: -2px; left: -2px; right: -2px; bottom: -2px;
-            background: linear-gradient(45deg, var(--term-green), var(--cyber-pink), var(--cyber-blue));
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            top: 0;
+            bottom: 0;
+            width: 10px;
+            background: linear-gradient(to right, rgba(255,255,255,0.05), transparent);
+            pointer-events: none;
+        }
+        .arcade-cabinet::before { left: -12px; }
+        .arcade-cabinet::after { right: -12px; transform: scaleX(-1); }
+
+        .marquee-container {
+            background: linear-gradient(to bottom, #1a1a24, #000);
+            padding: 10px;
+            border-bottom: 5px solid #000;
         }
 
-        .game-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 20px var(--term-green-glow);
+        .marquee {
+            background: #fff;
+            padding: 20px;
+            text-align: center;
+            border: 4px solid #000;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.3), 0 0 15px rgba(255, 255, 255, 0.2);
         }
 
-        .game-card:hover::before {
-            opacity: 1;
+        .marquee h1 {
+            color: #ff003c;
+            font-family: 'Press Start 2P', cursive;
+            margin: 0;
+            font-size: 26px;
+            text-shadow: 2px 2px 0px #88001b, -1px -1px 0px #ffb3c6;
+            letter-spacing: -1px;
+        }
+
+        .screen-bezel {
+            background: #1a1a1a;
+            padding: 15px;
+            border-top: 2px solid #333;
+        }
+
+        .screen {
+            background: #030303;
+            padding: 25px 20px;
+            border-radius: 8px;
+            border: 2px solid #222;
+            box-shadow: inset 0 0 30px #000, 0 0 10px rgba(0, 255, 65, 0.05);
+            min-height: 550px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .game-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #222;
+            padding: 12px 15px;
+            background: #0a0a0a;
+            transition: 0.2s;
+        }
+
+        .game-row:hover {
+            border-color: #444;
+            background: #151515;
+        }
+
+        .game-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .game-icon {
+            font-size: 16px;
+            filter: drop-shadow(0 0 2px rgba(255,255,255,0.3));
         }
 
         .game-title {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: white;
-            text-shadow: 0 0 5px white;
-        }
-
-        .game-desc {
-            font-size: 1rem;
-            margin-bottom: 2rem;
-            min-height: 50px;
-            color: #aaa;
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 11px;
+            text-shadow: 1px 1px 0 #000;
+            line-height: 1.4;
         }
 
         .play-btn {
-            display: inline-block;
-            padding: 10px 25px;
-            background: transparent;
-            color: var(--term-green);
-            border: 1px solid var(--term-green);
+            background: #ff003c;
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 9px;
+            padding: 8px 12px;
+            border: none;
             text-decoration: none;
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            transition: all 0.2s;
             cursor: pointer;
+            box-shadow: inset -2px -2px 0px rgba(0,0,0,0.3), inset 2px 2px 0px rgba(255,255,255,0.3);
+            transition: 0.1s;
         }
 
-        .play-btn:hover {
-            background: var(--term-green);
-            color: black;
-            box-shadow: 0 0 15px var(--term-green);
+        .play-btn:active {
+            box-shadow: inset 2px 2px 0px rgba(0,0,0,0.5);
+            transform: translateY(2px);
         }
 
-        .locked {
-            border-color: #555;
-            color: #555;
-            box-shadow: none;
-        }
-        
-        .locked .game-title {
-            color: #555;
-            text-shadow: none;
-        }
-
-        .locked .play-btn {
-            border-color: #555;
-            color: #555;
-            pointer-events: none;
+        .coin-panel {
+            background: linear-gradient(to bottom, #4a4a55, #1a1a24);
+            height: 70px;
+            border-top: 8px solid #0a0a0a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            box-shadow: inset 0 2px 5px rgba(255,255,255,0.1);
         }
 
-        /* Glitch Animation */
-        @keyframes glitch {
-            0% { text-shadow: 0.05em 0 0 var(--cyber-pink), -0.05em -0.025em 0 var(--cyber-blue); }
-            14% { text-shadow: 0.05em 0 0 var(--cyber-pink), -0.05em -0.025em 0 var(--cyber-blue); }
-            15% { text-shadow: -0.05em -0.025em 0 var(--cyber-pink), 0.025em 0.025em 0 var(--cyber-blue); }
-            49% { text-shadow: -0.05em -0.025em 0 var(--cyber-pink), 0.025em 0.025em 0 var(--cyber-blue); }
-            50% { text-shadow: 0.025em 0.05em 0 var(--cyber-pink), 0.05em 0 0 var(--cyber-blue); }
-            99% { text-shadow: 0.025em 0.05em 0 var(--cyber-pink), 0.05em 0 0 var(--cyber-blue); }
-            100% { text-shadow: -0.025em 0 0 var(--cyber-pink), -0.025em -0.025em 0 var(--cyber-blue); }
+        .coin-slot {
+            width: 20px;
+            height: 35px;
+            background: #000;
+            border: 2px solid #222;
+            border-top-color: #111;
+            border-bottom-color: #444;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        }
+
+        .coin-glow {
+            width: 3px;
+            height: 16px;
+            background: #ff0000;
+            box-shadow: 0 0 6px #ff0000;
+            border-radius: 2px;
         }
     </style>
-    <!-- Import Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header>
-        <h1>SYS.ARCADE</h1>
-        <div class="subtitle">:// WOLF-BYTES_ENTERTAINMENT_MAINFRAME</div>
-    </header>
-
-    <div class="arcade-grid">
-        <!-- Game 1: Spaced Invaders -->
-        <div class="game-card">
-            <div class="game-title">Spaced Invaders</div>
-            <div class="game-desc">Defend the sector against endless waves of alien hostiles.</div>
-            <!-- Update href when the game repo is linked -->
-            <a href="/spaced-invaders" class="play-btn">[ INIT_GAME ]</a>
+    <div class="arcade-cabinet">
+        
+        <div class="marquee-container">
+            <div class="marquee">
+                <h1>WOLF-BYTES</h1>
+            </div>
         </div>
 
-        <!-- Placeholder 1 -->
-        <div class="game-card locked">
-            <div class="game-title">DATA_CORRUPT</div>
-            <div class="game-desc">Project currently in development cycle...</div>
-            <a href="#" class="play-btn">[ LOCKED ]</a>
+        <div class="screen-bezel">
+            <div class="screen">
+                
+                <div class="game-row">
+                    <div class="game-info">
+                        <span class="game-icon">??</span>
+                        <span class="game-title">SPACED INVADERS</span>
+                    </div>
+                    <a href="https://sam420aibob-del.github.io/spaced-invaders/" class="play-btn">1 PLAYER</a>
+                </div>
+
+                <div class="game-row">
+                    <div class="game-info">
+                        <span class="game-icon">??</span>
+                        <span class="game-title">NEON BREAKER</span>
+                    </div>
+                    <a href="#" class="play-btn">1 PLAYER</a>
+                </div>
+
+                <div class="game-row">
+                    <div class="game-info">
+                        <span class="game-icon">??</span>
+                        <span class="game-title">CYBER SCROLLER</span>
+                    </div>
+                    <a href="#" class="play-btn">1 PLAYER</a>
+                </div>
+
+                <div class="game-row">
+                    <div class="game-info">
+                        <span class="game-icon">??</span>
+                        <span class="game-title">CYBEROIDS</span>
+                    </div>
+                    <a href="#" class="play-btn">1 PLAYER</a>
+                </div>
+
+                <div class="game-row">
+                    <div class="game-info">
+                        <span class="game-icon">??</span>
+                        <span class="game-title">BLOCK DROP</span>
+                    </div>
+                    <a href="#" class="play-btn">1 PLAYER</a>
+                </div>
+
+                <div class="game-row">
+                    <div class="game-info">
+                        <span class="game-icon">??</span>
+                        <span class="game-title">RETRO PONG</span>
+                    </div>
+                    <a href="#" class="play-btn">1 PLAYER</a>
+                </div>
+
+                <div class="game-row">
+                    <div class="game-info">
+                        <span class="game-icon">??</span>
+                        <span class="game-title">CYBER SNAKE</span>
+                    </div>
+                    <a href="#" class="play-btn">1 PLAYER</a>
+                </div>
+
+                <div class="game-row">
+                    <div class="game-info">
+                        <span class="game-icon">??</span>
+                        <span class="game-title">FLAPPY SHIP</span>
+                    </div>
+                    <a href="#" class="play-btn">1 PLAYER</a>
+                </div>
+
+                <div class="game-row">
+                    <div class="game-info">
+                        <span class="game-icon">??</span>
+                        <span class="game-title">NEON MAZE</span>
+                    </div>
+                    <a href="#" class="play-btn">1 PLAYER</a>
+                </div>
+
+            </div>
         </div>
 
-        <!-- Placeholder 2 -->
-        <div class="game-card locked">
-            <div class="game-title">UNKNOWN_ENTITY</div>
-            <div class="game-desc">Awaiting upload sequence...</div>
-            <a href="#" class="play-btn">[ LOCKED ]</a>
+        <div class="coin-panel">
+            <div class="coin-slot"><div class="coin-glow"></div></div>
+            <div class="coin-slot"><div class="coin-glow"></div></div>
         </div>
+
     </div>
 
 </body>
