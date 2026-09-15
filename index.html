@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wolf-Bytes | Cyber Arcade</title>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --term-green: #00ff41;
+            --term-green-glow: #00ff41aa;
+            --cyber-pink: #ff00ff;
+            --cyber-blue: #00ffff;
+            --dark-gray: #1a1a1a;
+        }
+
+        @font-face {
+            font-family: 'Terminal';
+            src: url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--term-green);
+            font-family: 'Share Tech Mono', monospace, 'Courier New';
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* Scanline effect overlay */
+        body::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        header {
+            margin-top: 3rem;
+            text-align: center;
+            position: relative;
+            z-index: 3;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--term-green);
+            text-shadow: 0 0 10px var(--term-green-glow);
+            animation: glitch 2s infinite;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--cyber-blue);
+            margin-top: 0.5rem;
+            text-shadow: 0 0 5px var(--cyber-blue);
+        }
+
+        .arcade-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 80%;
+            max-width: 1000px;
+            margin: 4rem auto;
+            position: relative;
+            z-index: 3;
+        }
+
+        .game-card {
+            background: var(--dark-gray);
+            border: 1px solid var(--term-green);
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, var(--term-green), var(--cyber-pink), var(--cyber-blue));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px var(--term-green-glow);
+        }
+
+        .game-card:hover::before {
+            opacity: 1;
+        }
+
+        .game-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: white;
+            text-shadow: 0 0 5px white;
+        }
+
+        .game-desc {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            min-height: 50px;
+            color: #aaa;
+        }
+
+        .play-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: transparent;
+            color: var(--term-green);
+            border: 1px solid var(--term-green);
+            text-decoration: none;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .play-btn:hover {
+            background: var(--term-green);
+            color: black;
+            box-shadow: 0 0 15px var(--term-green);
+        }
+
+        .locked {
+            border-color: #555;
+            color: #555;
+            box-shadow: none;
+        }
+        
+        .locked .game-title {
+            color: #555;
+            text-shadow: none;
+        }
+
+        .locked .play-btn {
+            border-color: #555;
+            color: #555;
+            pointer-events: none;
+        }
+
+        /* Glitch Animation */
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 var(--cyber-pink), -0.05em -0.025em 0 var(--cyber-blue); }
+            14% { text-shadow: 0.05em 0 0 var(--cyber-pink), -0.05em -0.025em 0 var(--cyber-blue); }
+            15% { text-shadow: -0.05em -0.025em 0 var(--cyber-pink), 0.025em 0.025em 0 var(--cyber-blue); }
+            49% { text-shadow: -0.05em -0.025em 0 var(--cyber-pink), 0.025em 0.025em 0 var(--cyber-blue); }
+            50% { text-shadow: 0.025em 0.05em 0 var(--cyber-pink), 0.05em 0 0 var(--cyber-blue); }
+            99% { text-shadow: 0.025em 0.05em 0 var(--cyber-pink), 0.05em 0 0 var(--cyber-blue); }
+            100% { text-shadow: -0.025em 0 0 var(--cyber-pink), -0.025em -0.025em 0 var(--cyber-blue); }
+        }
+    </style>
+    <!-- Import Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <h1>SYS.ARCADE</h1>
+        <div class="subtitle">:// WOLF-BYTES_ENTERTAINMENT_MAINFRAME</div>
+    </header>
+
+    <div class="arcade-grid">
+        <!-- Game 1: Spaced Invaders -->
+        <div class="game-card">
+            <div class="game-title">Spaced Invaders</div>
+            <div class="game-desc">Defend the sector against endless waves of alien hostiles.</div>
+            <!-- Update href when the game repo is linked -->
+            <a href="/spaced-invaders" class="play-btn">[ INIT_GAME ]</a>
+        </div>
+
+        <!-- Placeholder 1 -->
+        <div class="game-card locked">
+            <div class="game-title">DATA_CORRUPT</div>
+            <div class="game-desc">Project currently in development cycle...</div>
+            <a href="#" class="play-btn">[ LOCKED ]</a>
+        </div>
+
+        <!-- Placeholder 2 -->
+        <div class="game-card locked">
+            <div class="game-title">UNKNOWN_ENTITY</div>
+            <div class="game-desc">Awaiting upload sequence...</div>
+            <a href="#" class="play-btn">[ LOCKED ]</a>
+        </div>
+    </div>
+
+</body>
+</html>
